@@ -97,11 +97,11 @@ def run_pipeline(config):
             n_high_value+=1
 
 
-    fraud_rate=no_of_fraud/n_transactions if n_transactions>0 else 0
+    fraud_rate=round(no_of_fraud/n_transactions,2) if n_transactions>0 else 0
 
     report = {
         "n_transactions": n_transactions,
-        "total_amount": total_amount,
+        "total_amount": round(total_amount,2),
         "fraud_rate": fraud_rate,
         "n_high_value": n_high_value,
         "high_value_threshold": config["high_value_threshold"]
