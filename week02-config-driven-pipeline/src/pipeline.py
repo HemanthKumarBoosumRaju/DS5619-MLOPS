@@ -56,12 +56,22 @@ def load_transactions(path, fmt):
 
     elif fmt=="csv":
         with open(path,"r",newline="") as file:
-            #convert csv and read it as list because csv.DictReader() creates iterator/stream of data not list
+            #convert csv and read it as list because csv.DictReader() creates stream of data not list
             transactions=list(csv.DictReader(file))
 
-    raise NotImplementedError("load_transactions is not implemented yet")
+    for t in transactions:
+        if not isinstance(t,dict) or "amount" not in t or "is_fraud" not in t:
+            raise ValueError("Each transaction must be a dict containing both amount and is_fraud")
 
+        if not isinstance(t["amount"], (str, float)):
+            raise ValueError('"amount" must be a string or float')
 
+        if not (t["is_fraud"] in ("True", "False") or isinstance(t["is_fraud"], bool)):
+            raise ValueError('"is_fraud" must be "True", "False", or a boolean')  
+
+    return transactions 
+                                                                                  
+                                                                                 
 def run_pipeline(config):
     """Load data per `config`, compute the same summary fields as
     pipeline_hardcoded.py (n_transactions, total_amount, fraud_rate,
@@ -69,7 +79,38 @@ def run_pipeline(config):
     config["output_path"]. Return the report dict as well.
     """
     # TODO: implement
-    raise NotImplementedError("run_pipeline is not implemented yet")
+    transactions=load_transactions(config["input_path"], config["input_format"])
+
+    n_transactions=len(transactions)
+
+    total_amount = 0
+    no_of_fraud = 0
+    n_high_value = 0
+
+    for t in transactions:
+        total_amount+=float(t["amount"])
+
+        if str(t["is_fraud"]).lower()=="true":
+            no_of_fraud+=1
+
+        if float(t["amount"])>config["high_value_threshold"]:
+            n_high_value+=1
+
+
+    fraud_rate=no_of_fraud/n_transactions if n_transactions>0 else 0
+
+    report = {
+        "n_transactions": n_transactions,
+        "total_amount": total_amount,
+        "fraud_rate": fraud_rate,
+        "n_high_value": n_high_value,
+        "high_value_threshold": config["high_value_threshold"]
+    }
+
+    with open(config["output_path"],"w") as file:
+        json.dump(report,file,indent=2)
+
+    return report
 
 
 def main():
