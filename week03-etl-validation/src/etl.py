@@ -57,10 +57,19 @@ def run_etl(config):
     input_path=config["input_path"]
     rows=extract(input_path)
     violations = []
+    expectation_results = []
 
-    for expectation,arguments in build_expectation_suite():
-        result = expectation(rows,**arguments)
+    for expectation, arguments in build_expectation_suite():
+        result = expectation(rows, **arguments)
+
         violations.extend(result)
+
+        expectation_results.append({
+            "expectation": expectation.__name__,
+            "column": arguments["column"],
+            "n_violations": len(result),
+            "row_indices": [violation.row_index for violation in result]
+        })
 
     bad_rows=set()
     for violation in violations:
@@ -75,10 +84,36 @@ def run_etl(config):
         else:
             clean_rows.append(row)
 
+    # Write for clean CSV
+    with open(config["clean_output_path"], "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=rows[0].keys())
+
+        writer.writeheader()
+        writer.writerows(clean_rows)
+
+    # Write for quarantined CSV
+    with open(config["quarantine_output_path"], "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=rows[0].keys())
+
+        writer.writeheader()
+        writer.writerows(quarantined_rows)
+
+    # write validation report
+    validation_report = {
+        "expectations": expectation_results,
+        "summary": {
+            "total_rows": len(rows),
+            "clean_rows": len(clean_rows),
+            "quarantined_rows": len(quarantined_rows),
+            "total_violations": len(violations)
+        }
+    }
     
 
     # return validation_report
-
+    with open(config["report_output_path"], "w") as f:
+        json.dump(validation_report, f, indent=2)
+    return validation_report
     # raise NotImplementedError
 
 

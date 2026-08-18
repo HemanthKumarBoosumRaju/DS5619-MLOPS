@@ -123,6 +123,8 @@ def expect_column_unique(rows, column):
                     detail="value is not unique"
                 )
             )
+        else:
+            seen.add(rowData)
     return violations
 
     # raise NotImplementedError
