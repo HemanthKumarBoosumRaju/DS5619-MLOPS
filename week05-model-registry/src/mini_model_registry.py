@@ -68,6 +68,21 @@ def register_model(name, model_path, metrics, registry_dir):
            created_at (use _now()).
       5. Return version_id (str).
     """
+
+    version_id=_next_version_id(os.path.join(registry_dir,"models", name))
+
+    target_dir = _model_dir(registry_dir, name, version_id)
+    os.makedirs(target_dir, exist_ok=True)
+
+    with open(model_path, "r") as f:
+        model_data = json.load(f)
+    
+    target_model_path = os.path.join(target_dir, "model.json")
+    with open(target_model_path, "w") as f:
+        json.dump(model_data, f, indent=4)
+    
+    
+
     # TODO: implement
     raise NotImplementedError
 

@@ -2,6 +2,8 @@
 
 **Student ID used with `generate_for_student.py`:**
 <!-- paste the --student-id value you used -->
+student_id: 142602003
+seed: 3115386422
 
 
 ## Which candidate reached Production, and why?
