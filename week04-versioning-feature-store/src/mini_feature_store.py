@@ -41,7 +41,7 @@ def content_hash(file_path):
     return h.hexdigest()
 
 
-def _next_version_id(existing_dir):
+def  _next_version_id(existing_dir):
     """Given a directory of existing v1/, v2/, ... subfolders, return the
     next version id string. Given — you don't need to touch this."""
     if not os.path.isdir(existing_dir):
@@ -164,7 +164,7 @@ def build_features(rows):
 
         if card_id not in aggregates:
             aggregates[card_id] = {
-                "amounts": [],
+                "amounts": [], 
                 "card_present_count": 0,
                 "timestamps": []
             }

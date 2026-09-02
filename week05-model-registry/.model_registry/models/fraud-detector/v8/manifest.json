@@ -1,5 +1,5 @@
 {
-  "version_id": "v4",
+  "version_id": "v8",
   "name": "fraud-detector",
   "metrics": {
     "precision": 0.894,
@@ -7,13 +7,13 @@
     "f1": 0.835,
     "auc": 0.955
   },
-  "stage": "Archived",
-  "created_at": "2026-09-02T16:58:59.388900+00:00",
+  "stage": "Production",
+  "created_at": "2026-09-02T17:24:45.098533+00:00",
   "history": [
     {
       "from_stage": "None",
       "to_stage": "Production",
-      "at": "2026-09-02T16:58:59.417431+00:00"
+      "at": "2026-09-02T17:24:45.155608+00:00"
     }
   ]
 }
