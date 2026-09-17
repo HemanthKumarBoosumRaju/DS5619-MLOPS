@@ -47,254 +47,290 @@
     {
       "id": 0,
       "image_id": 0,
-      "category_id": 2,
+      "category_id": 10,
       "bbox": [
-        169,
-        160,
-        40,
-        13
+        60,
+        32,
+        19,
+        23
       ],
-      "area": 520
+      "area": 437
     },
     {
       "id": 1,
       "image_id": 0,
-      "category_id": 8,
+      "category_id": 13,
       "bbox": [
-        188,
-        66,
-        27,
+        35,
+        65,
+        45,
         17
       ],
-      "area": 459
+      "area": 765
     },
     {
       "id": 2,
       "image_id": 0,
-      "category_id": 10,
+      "category_id": 12,
       "bbox": [
-        52,
-        6,
-        42,
-        19
+        90,
+        51,
+        23,
+        18
       ],
-      "area": 798
+      "area": 414
     },
     {
       "id": 3,
-      "image_id": 0,
-      "category_id": 3,
+      "image_id": 1,
+      "category_id": 8,
       "bbox": [
-        100,
-        143,
-        27,
-        23
+        135,
+        123,
+        31,
+        20
       ],
-      "area": 621
+      "area": 620
     },
     {
       "id": 4,
       "image_id": 1,
-      "category_id": 6,
+      "category_id": 1,
       "bbox": [
-        183,
-        79,
-        22,
-        30
+        178,
+        95,
+        46,
+        27
       ],
-      "area": 660
+      "area": 1242
     },
     {
       "id": 5,
-      "image_id": 1,
-      "category_id": 12,
+      "image_id": 2,
+      "category_id": 1,
       "bbox": [
-        177,
-        56,
+        10,
+        125,
         32,
-        26
+        12
       ],
-      "area": 832
+      "area": 384
     },
     {
       "id": 6,
-      "image_id": 1,
-      "category_id": 11,
+      "image_id": 2,
+      "category_id": 12,
       "bbox": [
-        138,
-        25,
-        46,
-        20
+        262,
+        88,
+        43,
+        22
       ],
-      "area": 920
+      "area": 946
     },
     {
       "id": 7,
       "image_id": 2,
-      "category_id": 9,
+      "category_id": 0,
       "bbox": [
-        73,
-        25,
-        44,
-        13
+        61,
+        123,
+        30,
+        25
       ],
-      "area": 572
+      "area": 750
     },
     {
       "id": 8,
       "image_id": 2,
-      "category_id": 4,
+      "category_id": 6,
       "bbox": [
-        223,
-        39,
-        31,
-        12
+        261,
+        154,
+        42,
+        22
       ],
-      "area": 372
+      "area": 924
     },
     {
       "id": 9,
-      "image_id": 3,
-      "category_id": 5,
+      "image_id": 2,
+      "category_id": 7,
       "bbox": [
-        108,
-        31,
-        26,
-        8
+        169,
+        142,
+        20,
+        15
       ],
-      "area": 208
+      "area": 300
     },
     {
       "id": 10,
       "image_id": 3,
-      "category_id": 13,
+      "category_id": 12,
       "bbox": [
+        276,
+        149,
         32,
-        10,
-        23,
-        10
+        8
       ],
-      "area": 230
+      "area": 256
     },
     {
       "id": 11,
       "image_id": 3,
-      "category_id": 0,
+      "category_id": 10,
       "bbox": [
-        109,
-        149,
-        26,
-        10
+        162,
+        144,
+        24,
+        12
       ],
-      "area": 260
+      "area": 288
     },
     {
       "id": 12,
-      "image_id": 4,
-      "category_id": 5,
+      "image_id": 3,
+      "category_id": 2,
       "bbox": [
-        185,
-        92,
-        14,
-        11
+        238,
+        4,
+        12,
+        16
       ],
-      "area": 154
+      "area": 192
     },
     {
       "id": 13,
-      "image_id": 4,
-      "category_id": 9,
+      "image_id": 3,
+      "category_id": 11,
       "bbox": [
-        260,
-        17,
-        12,
-        15
+        246,
+        104,
+        31,
+        20
       ],
-      "area": 180
+      "area": 620
     },
     {
       "id": 14,
-      "image_id": 4,
-      "category_id": 9,
+      "image_id": 3,
+      "category_id": 0,
       "bbox": [
-        265,
-        128,
-        31,
-        16
+        301,
+        157,
+        15,
+        13
       ],
-      "area": 496
+      "area": 195
     },
     {
       "id": 15,
-      "image_id": 4,
-      "category_id": 13,
+      "image_id": 3,
+      "category_id": 4,
       "bbox": [
-        101,
-        21,
-        31,
-        21
+        226,
+        146,
+        17,
+        10
       ],
-      "area": 651
+      "area": 170
     },
     {
       "id": 16,
       "image_id": 4,
-      "category_id": 12,
+      "category_id": 3,
       "bbox": [
-        112,
-        80,
-        15,
-        9
+        17,
+        123,
+        28,
+        15
       ],
-      "area": 135
+      "area": 420
     },
     {
       "id": 17,
-      "image_id": 5,
-      "category_id": 0,
+      "image_id": 4,
+      "category_id": 9,
       "bbox": [
-        128,
-        8,
-        28,
-        18
+        230,
+        104,
+        12,
+        9
       ],
-      "area": 504
+      "area": 108
     },
     {
       "id": 18,
-      "image_id": 5,
-      "category_id": 10,
+      "image_id": 4,
+      "category_id": 12,
       "bbox": [
-        199,
-        23,
-        13,
-        11
+        97,
+        98,
+        18,
+        16
       ],
-      "area": 143
+      "area": 288
     },
     {
       "id": 19,
-      "image_id": 5,
-      "category_id": 12,
+      "image_id": 4,
+      "category_id": 5,
       "bbox": [
-        41,
-        36,
+        71,
         27,
-        16
+        20,
+        18
       ],
-      "area": 432
+      "area": 360
     },
     {
       "id": 20,
-      "image_id": 5,
-      "category_id": 3,
+      "image_id": 4,
+      "category_id": 8,
       "bbox": [
-        91,
-        165,
-        24,
-        9
+        294,
+        77,
+        15,
+        10
       ],
-      "area": 216
+      "area": 150
+    },
+    {
+      "id": 21,
+      "image_id": 5,
+      "category_id": 1,
+      "bbox": [
+        234,
+        151,
+        28,
+        13
+      ],
+      "area": 364
+    },
+    {
+      "id": 22,
+      "image_id": 5,
+      "category_id": 11,
+      "bbox": [
+        47,
+        166,
+        29,
+        8
+      ],
+      "area": 232
+    },
+    {
+      "id": 23,
+      "image_id": 5,
+      "category_id": 6,
+      "bbox": [
+        143,
+        40,
+        14,
+        11
+      ],
+      "area": 154
     }
   ],
   "categories": [
