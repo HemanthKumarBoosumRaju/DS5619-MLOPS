@@ -14,16 +14,16 @@ session):
 Fill in the three functions marked # TODO. The `Task` dataclass above them
 is given.
 """
-import time
+import time  # noqa: F401
 from dataclasses import dataclass, field
-from typing import Callable, Dict, List
+from typing import Callable, Dict, List  # noqa: UP035
 
 
 @dataclass
 class Task:
     name: str
     fn: Callable[[dict], None]  # called as fn(context) -> mutates context in place
-    depends_on: List[str] = field(default_factory=list)
+    depends_on: list[str] = field(default_factory=list)
     max_retries: int = 0
     retry_delay_seconds: float = 0.0
 
@@ -32,7 +32,7 @@ class Task:
 # Part 1 — Topological order (a DAG is a dependency graph, not a list)
 # ---------------------------------------------------------------------------
 
-def topological_order(tasks: Dict[str, Task]) -> List[str]:
+def topological_order(tasks: dict[str, Task]) -> list[str]:
     """Given a dict of {task_name: Task}, return a list of task names such
     that every task appears AFTER all the tasks in its `depends_on`.
 
@@ -49,7 +49,32 @@ def topological_order(tasks: Dict[str, Task]) -> List[str]:
     placing every task, there's a cycle.
     """
     # TODO: implement
-    raise NotImplementedError
+    in_degree = {}
+
+    for name, task in tasks.items():
+        for dependency in task.depends_on:
+            if dependency not in tasks:
+                raise ValueError(f"Missing dependency: {dependency}")
+        in_degree[name] = len(task.depends_on)
+
+    ready = [name for name in tasks if in_degree[name] == 0]
+    order = []
+
+    while ready:
+        current = ready.pop(0)
+        order.append(current)
+
+        for name, task in tasks.items():
+            if current in task.depends_on:
+                in_degree[name] -= 1
+
+                if in_degree[name] == 0:
+                    ready.append(name)
+
+    if len(order) != len(tasks):
+        raise ValueError("Dependency cycle detected")
+
+    return order
 
 
 # ---------------------------------------------------------------------------
@@ -68,14 +93,26 @@ def run_task_with_retry(task: Task, context: dict) -> int:
     it) after all retries are exhausted.
     """
     # TODO: implement
-    raise NotImplementedError
+    attempts=0
+    
+    while attempts <= task.max_retries:
+        attempts += 1
+
+        try:
+            task.fn(context)
+            return attempts
+        except Exception:
+            if attempts > task.max_retries:
+                raise
+
+            time.sleep(task.retry_delay_seconds)
 
 
 # ---------------------------------------------------------------------------
 # Part 3 — Run the whole DAG
 # ---------------------------------------------------------------------------
 
-def run_dag(tasks: Dict[str, Task], context: dict) -> dict:
+def run_dag(tasks: dict[str, Task], context: dict) -> dict:
     """Run every task in `tasks` in an order that respects dependencies
     (use topological_order), passing the SAME `context` dict to every task
     (so a downstream task can read what an upstream task wrote into it —
@@ -93,4 +130,30 @@ def run_dag(tasks: Dict[str, Task], context: dict) -> dict:
     Return {"order": <the order you computed>, "task_results": task_results}.
     """
     # TODO: implement
-    raise NotImplementedError
+    order = topological_order(tasks)
+    task_results = {}
+
+    for name in order:
+        task = tasks[name]
+
+        try:
+            attempts = run_task_with_retry(task, context)
+
+            task_results[name] = {
+                "status": "success",
+                "attempts": attempts
+            }
+
+        except Exception as exc:
+            task_results[name] = {
+                "status": "failed",
+                "attempts": task.max_retries + 1,
+                "error": str(exc)
+            }
+
+            break
+
+    return {
+        "order": order,
+        "task_results": task_results
+    }
