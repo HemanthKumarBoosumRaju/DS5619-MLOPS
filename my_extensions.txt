@@ -1,0 +1,10 @@
+charliermarsh.ruff
+enkia.tokyo-night
+esbenp.prettier-vscode
+github.vscode-github-actions
+kevinrose.vsc-python-indent
+ms-python.black-formatter
+njpwerner.autodocstring
+tomoki1207.pdf
+usernamehw.errorlens
+zhuangtongfa.material-theme
