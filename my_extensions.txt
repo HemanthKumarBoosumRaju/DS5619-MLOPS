@@ -1,3 +1,5 @@
+code --list-extensions > my_extensions.txt
+
 charliermarsh.ruff
 enkia.tokyo-night
 esbenp.prettier-vscode
