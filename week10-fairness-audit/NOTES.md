@@ -3,7 +3,27 @@
 **Student ID used with `generate_for_student.py`:**
 <!-- paste the --student-id value you used -->
 
+student_id: 142602003
+seed: 34416517
+Wrote 60 images across 2 camera profiles -> /home2/mlops/Downloads/MLOPSLAB/week10-fairness-audit/data/fixtures
+Wrote 238 annotations -> /home2/mlops/Downloads/MLOPSLAB/week10-fairness-audit/data/fixtures/_annotations.coco.json
+Sanity-checked recall (using the mock detector, not your fairness_audit.py):
+  Bicycle               75.0% <-- below threshold
+  Two-wheeler           82.6% <-- below threshold
+  Three-wheeler         84.6% <-- below threshold
+  LCV                   89.5% <-- below threshold
+  Van                   91.7%
+  Hatchback             95.0%
+  Truck                100.0%
+  SUV                  100.0%
+  Bus                  100.0%
+  Sedan                100.0%
+  MUV                  100.0%
+  Other                100.0%
+  Tempo-traveller      100.0%
+  Mini-bus             100.0%
 
+Record this seed in NOTES.md when you submit (see README.md).
 ## Which classes got flagged?
 
 <!-- Which classes got flagged, and does that match what you'd expect given
