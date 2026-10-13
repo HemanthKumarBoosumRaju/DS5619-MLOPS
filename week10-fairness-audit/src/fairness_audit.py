@@ -58,7 +58,41 @@ def compute_iou(box_a, box_b):
       5. Return intersection_area / union_area, or 0.0 if union_area is 0.
     """
     # TODO: implement
-    raise NotImplementedError
+    x1_a = box_a[0]
+    y1_a = box_a[1]
+    x2_a = x1_a + box_a[2]
+    y2_a = y1_a + box_a[3]
+
+    # Convert box B to corner coordinates
+    x1_b = box_b[0]
+    y1_b = box_b[1]
+    x2_b = x1_b + box_b[2]
+    y2_b = y1_b + box_b[3]
+
+    # Find the overlapping rectangle
+    inter_x1 = max(x1_a, x1_b)
+    inter_y1 = max(y1_a, y1_b)
+    inter_x2 = min(x2_a, x2_b)
+    inter_y2 = min(y2_a, y2_b)
+
+    # Calculate overlap width and height
+    inter_width = max(0, inter_x2 - inter_x1)
+    inter_height = max(0, inter_y2 - inter_y1)
+
+    intersection_area = inter_width * inter_height
+
+    # Calculate the area of each box
+    area_a = max(0, box_a[2]) * max(0, box_a[3])
+    area_b = max(0, box_b[2]) * max(0, box_b[3])
+
+    # Calculate the total area covered by both boxes
+    union_area = area_a + area_b - intersection_area
+
+    # Avoid division by zero
+    if union_area == 0:
+        return 0.0
+
+    return intersection_area/union_area
 
 
 # ---------------------------------------------------------------------------
@@ -79,7 +113,22 @@ def match_ground_truth(gt_boxes, detections, iou_threshold=0.3):
     happens to overlap both (rare with real data, fine for this audit).
     """
     # TODO: implement
-    raise NotImplementedError
+    matched_boxes = []
+
+    for gt_box in gt_boxes:
+        found = False
+
+        for detection in detections:
+            # Compare the ground-truth box with the detected box
+            iou = compute_iou(gt_box, detection.bbox)
+
+            if iou >= iou_threshold:
+                found = True
+                break
+
+        matched_boxes.append(found)
+
+    return matched_boxes
 
 
 # ---------------------------------------------------------------------------
@@ -112,7 +161,83 @@ def audit_by_category(coco_path, fixtures_dir, iou_threshold=0.3, transform=None
     file paths are `os.path.join(fixtures_dir, image["file_name"])`.
     """
     # TODO: implement
-    raise NotImplementedError
+    # Load the COCO annotation file
+    with open(coco_path, "r") as file:
+        coco_data = json.load(file)
+
+    # Map category IDs to category names
+    category_names = {}
+
+    for category in coco_data["categories"]:
+        category_names[category["id"]] = category["name"]
+
+    # Group annotations by image ID
+    annotations_by_image = defaultdict(list)
+
+    for annotation in coco_data["annotations"]:
+        image_id = annotation["image_id"]
+        annotations_by_image[image_id].append(annotation)
+
+    # Store the total and detected boxes for each category
+    category_stats = {}
+
+    for image_info in coco_data["images"]:
+        image_id = image_info["id"]
+        image_path = os.path.join(
+            fixtures_dir, image_info["file_name"]
+        )
+
+        # Open the image and convert it to RGB
+        with Image.open(image_path) as image:
+            image = image.convert("RGB")
+
+            # Apply an optional image transformation
+            if transform is not None:
+                image = transform(image)
+
+            # Run the detector once for this image
+            detections = det.detect(image)
+
+        # Get the ground-truth annotations for this image
+        annotations = annotations_by_image[image_id]
+
+        # Group ground-truth boxes by category
+        boxes_by_category = defaultdict(list)
+
+        for annotation in annotations:
+            category_id = annotation["category_id"]
+            category_name = category_names[category_id]
+
+            boxes_by_category[category_name].append(
+                annotation["bbox"]
+            )
+
+        # Count total and detected boxes for each category
+        for category_name, gt_boxes in boxes_by_category.items():
+
+            if category_name not in category_stats:
+                category_stats[category_name] = {
+                    "total": 0,
+                    "detected": 0
+                }
+
+            # Check which ground-truth boxes were detected
+            matches = match_ground_truth(
+                gt_boxes, detections, iou_threshold
+            )
+
+            category_stats[category_name]["total"] += len(gt_boxes)
+            category_stats[category_name]["detected"] += sum(matches)
+
+    # Calculate recall for each category
+    for category_name, stats in category_stats.items():
+        total = stats["total"]
+        detected = stats["detected"]
+
+        if total > 0:
+            stats["recall"] = round(detected/total, 4)
+
+    return category_stats
 
 
 # ---------------------------------------------------------------------------
@@ -127,4 +252,15 @@ def find_underperforming_categories(category_stats, recall_threshold=0.90):
     recall first).
     """
     # TODO: implement
-    raise NotImplementedError
+    underperforming = []
+
+    for category_name, stats in category_stats.items():
+        recall = stats["recall"]
+
+        if recall < recall_threshold:
+            underperforming.append((category_name, recall))
+
+    # Sort by recall, from lowest to highest
+    underperforming.sort(key=lambda item: item[1])
+
+    return underperforming
