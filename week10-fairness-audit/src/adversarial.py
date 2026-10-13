@@ -114,7 +114,6 @@ def find_most_fragile(attack_stats, eps, top_k=3):
     change with the student ID. run_pipeline.py also reports the classes with
     the lowest ABSOLUTE recall under attack; compare the two in NOTES.md.
     """
-    # TODO: implement
     clean_stats = attack_stats[0]
     attacked_stats = attack_stats[eps]
 
