@@ -46,18 +46,14 @@ def perturb_image(img, eps):
     ...) puts them back. No per-pixel Python loop is needed.
     """
     # TODO: implement
-    # Convert to RGB without modifying the original image
     image = img.convert("RGB")
 
-    # Separate the red, green and blue channels
     red, green, blue = image.split()
 
-    # Lower red and raise green and blue by eps
     red = red.point(lambda value: max(0, value - eps))
     green = green.point(lambda value: min(255, value + eps))
     blue = blue.point(lambda value: min(255, value + eps))
 
-    # Combine the modified channels into a new RGB image
     return Image.merge("RGB", (red, green, blue))
 
 
@@ -78,12 +74,9 @@ def audit_under_attack(coco_path, fixtures_dir, eps_values=(0, 10, 20, 30, 40),
     attack_stats = {}
 
     for eps in eps_values:
-
-        # Create a function that applies this attack strength
         def transform(image, budget=eps):
             return perturb_image(image, budget)
 
-        # Run the same audit on the perturbed images
         category_stats = fa.audit_by_category(
             coco_path,
             fixtures_dir,
@@ -91,7 +84,6 @@ def audit_under_attack(coco_path, fixtures_dir, eps_values=(0, 10, 20, 30, 40),
             transform=transform
         )
 
-        # Store the results for this epsilon value
         attack_stats[eps] = category_stats
 
     return attack_stats
@@ -120,20 +112,16 @@ def find_most_fragile(attack_stats, eps, top_k=3):
     recall_drops = []
 
     for category_name, clean_data in clean_stats.items():
-
-        # Skip categories that are missing from the attacked results
         if category_name not in attacked_stats:
             continue
-
+        
         clean_recall = clean_data["recall"]
         attacked_recall = attacked_stats[category_name]["recall"]
 
-        # Positive drop means recall became worse
         drop = clean_recall - attacked_recall
 
         recall_drops.append((category_name, round(drop, 4)))
 
-    # Sort by largest drop, then alphabetically for ties
     recall_drops.sort(key=lambda item: (-item[1], item[0]))
 
     return recall_drops[:top_k]
